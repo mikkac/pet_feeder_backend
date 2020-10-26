@@ -1,7 +1,7 @@
 # PetFeeder Backend 
 
 ## Introduction
-This repo contains backend part of PetFeeder application. It's part of project which purpose is to create DYI feeder controlled remotely.
+This repo contains backend part of PetFeeder application. It's project whose purpose is to create DYI feeder controlled remotely.
 
 ## Requirements
 * python 3.0+ with `venv` module
