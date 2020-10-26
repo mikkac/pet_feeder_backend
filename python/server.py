@@ -1,6 +1,5 @@
 import argparse
 
-from servo import Servo
 from feeder import Feeder
 from flask import Flask, jsonify
 
@@ -8,7 +7,13 @@ app = Flask(__name__)
 feeder = Feeder()
 
 def setup(opt):
-    servo = Servo(opt.gpio)
+    servo = None
+    if opt.fake_servo:
+        from fake_servo import FakeServo
+        servo = FakeServo(opt.gpio)
+    else:
+        from servo import Servo
+        servo = Servo(opt.gpio)
     servo.setup()
     feeder.set_servo(servo)
     feeder.set_portions_limit(opt.portions_limit)
@@ -16,7 +21,7 @@ def setup(opt):
 @app.route('/feed')
 def feed():
     status = feeder.feed()
-    #  msg = get_message_for_status(status)
+    #  msg = get_message_for_status(status) 
     msg = "Feed"
     return jsonify(
             status=status, 
@@ -56,6 +61,12 @@ if __name__ == '__main__':
         type=int, 
         default=5000, 
         help="Serving port"
+    )
+    parser.add_argument(
+        "--fake_servo", 
+        type=lambda x: (str(x).lower() in ['true','1', 'yes']),
+        default=False, 
+        help="Whether FakeServo shall be used ('true' if yes)"
     )
     opt = parser.parse_args()
 
