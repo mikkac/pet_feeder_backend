@@ -32,12 +32,13 @@ optional arguments:
   --fake_servo FAKE_SERVO
                         Whether FakeServo shall be used ('true' if yes)
 ```
-So if run with servomechanism connected (application has to be deployed to RaspberryPi), one can run:
+Application is prepared to be run in two environments:
+* RaspberryPi with servomechanism connected:
 ```bash
 python3 python/server.py --portions_limit=8 --gpio=11 --port=3333
 ```
 
-To run in debug environment, without connected servo, FakeServo can be used via option `--fake_servo`:
+* Debug environment without servo connected:
 ```bash
 python3 python/server.py --portions_limit=8 --port=3333 --fake_servo=true
 ```
