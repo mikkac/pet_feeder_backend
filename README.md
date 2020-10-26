@@ -33,12 +33,12 @@ optional arguments:
                         Whether FakeServo shall be used ('true' if yes)
 ```
 Application is prepared to be run in two environments:
-* RaspberryPi with servomechanism connected:
+* RaspberryPi with servomechanism connected, e.g.
 ```bash
 python3 python/server.py --portions_limit=8 --gpio=11 --port=3333
 ```
 
-* Debug environment without servo connected:
+* Debug environment without servo connected, e.g.
 ```bash
 python3 python/server.py --portions_limit=8 --port=3333 --fake_servo=true
 ```
