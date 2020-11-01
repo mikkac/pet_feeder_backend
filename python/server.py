@@ -32,9 +32,9 @@ def feed():
     )
 
 
-@app.route('/fillUp')
-def fill_up():
-    status = feeder.fill_up()
+@app.route('/refill')
+def refill():
+    status = feeder.refill()
     status_as_dict = [s.as_dict() for s in status]
     return jsonify(
         status=status_as_dict,

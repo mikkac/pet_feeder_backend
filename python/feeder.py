@@ -34,7 +34,7 @@ class Feeder():
 
         return [self.last_status, servo_status]
 
-    def fill_up(self):
+    def refill(self):
         if self.portions_left == self.portions_limit:
             print('Feeder already full! No need to refill')
             self.last_status.set_status(Status.FEEDER_FULL)
@@ -43,7 +43,7 @@ class Feeder():
 
         self.portions_left = self.portions_limit
         print(
-            f'Filling up... portions left: {self.portions_left}/{self.portions_limit}')
+            f'Refilling... portions left: {self.portions_left}/{self.portions_limit}')
         servo_status = self.servo.set_angle(0)
 
         if servo_status.get_status() == Status.SERVO_ROTATE_SUCCESS:
