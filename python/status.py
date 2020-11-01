@@ -75,8 +75,11 @@ class Status():
     def set_status(self, status):
         self.status = status
 
+    def get_who(self):
+        return self.who
+
     def as_dict(self):
         return {
-            f'{self.who}_status': self.status,
-            f'{self.who}_message': Status.get_desc(self.status),
+            'status': self.status,
+            'message': Status.get_desc(self.status),
         }

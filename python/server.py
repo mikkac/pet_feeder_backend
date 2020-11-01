@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 from status import Status
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 feeder = Feeder()
 
 
@@ -24,22 +25,24 @@ def setup(opt):
 @app.route('/feed')
 def feed():
     status = feeder.feed()
-    status_as_dict = [s.as_dict() for s in status]
-    return jsonify(
-        status=status_as_dict,
-        portions_limit=feeder.get_portions_limit(),
-        portions_left=feeder.get_portions_left()
+    return jsonify({
+        'portions_left': feeder.get_portions_left(),
+        'portions_limit': feeder.get_portions_limit(),
+        f'{status[0].get_who()}': status[0].as_dict(),
+        f'{status[1].get_who()}': status[1].as_dict()
+    }
     )
 
 
 @app.route('/refill')
 def refill():
     status = feeder.refill()
-    status_as_dict = [s.as_dict() for s in status]
-    return jsonify(
-        status=status_as_dict,
-        portions_limit=feeder.get_portions_limit(),
-        portions_left=feeder.get_portions_left()
+    return jsonify({
+        'portions_left': feeder.get_portions_left(),
+        'portions_limit': feeder.get_portions_limit(),
+        f'{status[0].get_who()}': status[0].as_dict(),
+        f'{status[1].get_who()}': status[1].as_dict()
+    }
     )
 
 
