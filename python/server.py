@@ -2,9 +2,11 @@ import argparse
 
 from feeder import Feeder
 from flask import Flask, jsonify
+from status import Status
 
 app = Flask(__name__)
 feeder = Feeder()
+
 
 def setup(opt):
     servo = None
@@ -18,29 +20,28 @@ def setup(opt):
     feeder.set_servo(servo)
     feeder.set_portions_limit(opt.portions_limit)
 
+
 @app.route('/feed')
 def feed():
     status = feeder.feed()
-    #  msg = get_message_for_status(status) 
-    msg = "Feed"
+    status_as_dict = [s.as_dict() for s in status]
     return jsonify(
-            status=status, 
-            message=msg, 
-            portions_limit=feeder.get_portions_limit(), 
-            portions_left=feeder.get_portions_left()
-            )
+        status=status_as_dict,
+        portions_limit=feeder.get_portions_limit(),
+        portions_left=feeder.get_portions_left()
+    )
+
 
 @app.route('/fillUp')
 def fill_up():
     status = feeder.fill_up()
-    #  msg = get_message_for_status(status)
-    msg = "Feed"
+    status_as_dict = [s.as_dict() for s in status]
     return jsonify(
-            status=status, 
-            message=msg, 
-            portions_limit=feeder.get_portions_limit(), 
-            portions_left=feeder.get_portions_left()
-            )
+        status=status_as_dict,
+        portions_limit=feeder.get_portions_limit(),
+        portions_left=feeder.get_portions_left()
+    )
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -57,15 +58,15 @@ if __name__ == '__main__':
         help="Number of GPIO used by Servomechanism",
     )
     parser.add_argument(
-        "--port", 
-        type=int, 
-        default=5000, 
+        "--port",
+        type=int,
+        default=5000,
         help="Serving port"
     )
     parser.add_argument(
-        "--fake_servo", 
-        type=lambda x: (str(x).lower() in ['true','1', 'yes']),
-        default=False, 
+        "--fake_servo",
+        type=lambda x: (str(x).lower() in ['true', '1', 'yes']),
+        default=False,
         help="Whether FakeServo shall be used ('true' if yes)"
     )
     opt = parser.parse_args()
